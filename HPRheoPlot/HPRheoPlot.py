@@ -480,6 +480,18 @@ def etagammaplot():
   shear_rate4 = df_flowsweep4.iloc[:, 1]
   viscosity4 = df_flowsweep4.iloc[:, 2]
 
+  #It is important to take shear_rate range from the user.
+  print("INFO Enter the desired minimum shear rate value [unit: s^-1] (e.g. 10):")
+  min_range = float(input())
+  print("INFO Enter the desired maximum shear rate value [unit: s^-1] (e.g. 500):")
+  max_range = float(input())
+
+  # Trim the data based on user's desired shear rate range
+  shear_rate3_trimmed = shear_rate3[(shear_rate3 >= min_range) & (shear_rate3 <= max_range)]
+  viscosity3_trimmed = viscosity3[(shear_rate3 >= min_range) & (shear_rate3 <= max_range)]
+  shear_rate4_trimmed = shear_rate4[(shear_rate4 >= min_range) & (shear_rate4 <= max_range)]
+  viscosity4_trimmed = viscosity4[(shear_rate4 >= min_range) & (shear_rate4 <= max_range)]
+
   # PLOT: flow sweep 3
   # NOTE: y-scale should be logaritmic
   # LINE
@@ -488,7 +500,7 @@ def etagammaplot():
     color = 'tab:red'
     ax1.set_xlabel('Shear rate (s$^{-1}$)')
     ax1.set_ylabel('Viscosity (Pa·s)', color='black')
-    ax1.plot(shear_rate3, viscosity3, color=color, linewidth = line_width)
+    ax1.plot(shear_rate3_trimmed, viscosity3_trimmed, color=color, linewidth = line_width)
     ax1.tick_params(axis='y', labelcolor='black')
     ax1.set_xlim(0, )
     ax1.set_ylim()
@@ -501,7 +513,7 @@ def etagammaplot():
     color = 'tab:red'
     ax1.set_xlabel('Shear rate (s$^{-1}$)')
     ax1.set_ylabel('Viscosity (Pa·s)', color='black', fontsize=16)
-    ax1.scatter(shear_rate3, viscosity3, color=color, s = None, alpha = 0.8)
+    ax1.scatter(shear_rate3_trimmed, viscosity3_trimmed, color=color, s = None, alpha = 0.8)
     ax1.tick_params(axis='y', labelcolor='black')
     ax1.set_xlim(0, )
     ax1.set_ylim()
@@ -512,7 +524,7 @@ def etagammaplot():
   # LINE
   if graph_style == 'line':
     color = 'tab:blue'
-    ax1.plot(shear_rate4, viscosity4, color=color, linewidth = line_width)
+    ax1.plot(shear_rate4_trimmed, viscosity4_trimmed, color=color, linewidth = line_width)
     ax1.tick_params(axis='y', labelcolor='black')
     ax1.set_xlim(0, )
     ax1.set_ylim()
@@ -522,7 +534,7 @@ def etagammaplot():
     # SCATTER
   elif graph_style == 'scatter':
     color = 'tab:blue'
-    ax1.scatter(shear_rate4, viscosity4, color=color, s = None, alpha = 0.8)
+    ax1.scatter(shear_rate4_trimmed, viscosity4_trimmed, color=color, s = None, alpha = 0.8)
     ax1.tick_params(axis='y', labelcolor='black')
     ax1.set_xlim(0, )
     ax1.set_ylim()
@@ -535,49 +547,34 @@ def etagammaplot():
   # Tick interval control & notation
   ax1.yaxis.set_major_formatter(ticker.FormatStrFormatter('%g'))
 
-  # Curve fitting to the Power-law model, and the Cross model.
-  # NOTE: The Power-law model is defined as eta = K * gamma^(n-1), and the Cross model is defined as eta = (eta0 - eta_infty) / (1 + (K * gamma)^n) + eta_infty.
-  # NOTE: The Sisko model is defined as eta = eta_infty + K * gamma^(n-1)
-
+  # Curve fitting definition
   # Define the Power-law model
-  def powerlaw(x, K, n):
-    return K * x ** (n - 1)
+  def powerlaw(x, k, n):
+    return k * x ** (n)
   
   # Define the Cross model
-  def cross(x, K, n, eta0, eta_infty):
-    return (eta0 - eta_infty) / (1 + (K * x) ** n) + eta_infty
+  def cross(x, K, m, eta0, eta_infty):
+    return (eta0 - eta_infty) / (1 + (K * x) ** m) + eta_infty
   
   # Define the Sisko model
-  def sisko(x, K, n, eta_infty):
-    return eta_infty + K * x ** (n - 1)
+  def sisko(x, k, n, eta_infty):
+    return eta_infty + k * x ** (n-1)
   
   # Power-law model fitting
   if curvefit_equation == 'Powerlaw':
-    # The power-law model fitting might be differed according to the given shear_rate range. 
-    # Therefore, it is important to take shear_rate range from the user.
-    print("Enter the desired minimum shear rate range [unit: s^-1] (e.g. 10):")
-    min_range = float(input())
-    print("Enter the desired maximum shear rate range [unit: s^-1] (e.g. 500):")
-    max_range = float(input())
-
-    # Trim the data based on user's desired shear rate range
-    shear_rate3_trimmed = shear_rate3[(shear_rate3 >= min_range) & (shear_rate3 <= max_range)]
-    viscosity3_trimmed = viscosity3[(shear_rate3 >= min_range) & (shear_rate3 <= max_range)]
-    shear_rate4_trimmed = shear_rate4[(shear_rate4 >= min_range) & (shear_rate4 <= max_range)]
-    viscosity4_trimmed = viscosity4[(shear_rate4 >= min_range) & (shear_rate4 <= max_range)]
 
     # (1) flow sweep 3 fitting
     # NOTE: The initial values of K and n are set to 1.0 and 1.0, respectively.
     popt3, pcov3 = curve_fit(powerlaw, shear_rate3_trimmed, viscosity3_trimmed, p0 = [1.0, 1.0])
-    K3 = popt3[0]
+    k3 = popt3[0]
     n3 = popt3[1]
-    eta3 = powerlaw(shear_rate3_trimmed, K3, n3)
+    eta3 = powerlaw(shear_rate3_trimmed, k3, n3)
     # (2) flow sweep 4 fitting
-    # NOTE: The initial values of K and n are set to 1.0 and 1.0, respectively.
+    # NOTE: The initial values of k and n are set to 1.0 and 1.0, respectively.
     popt4, pcov4 = curve_fit(powerlaw, shear_rate4_trimmed, viscosity4_trimmed, p0 = [1.0, 1.0])
-    K4 = popt4[0]
+    k4 = popt4[0]
     n4 = popt4[1]
-    eta4 = powerlaw(shear_rate4_trimmed, K4, n4)
+    eta4 = powerlaw(shear_rate4_trimmed, k4, n4)
     
     # (3) Plot
     half_linewidth = line_width / 2
@@ -588,41 +585,29 @@ def etagammaplot():
     print("INFO The Power-law model is selected.")
     print("INFO The Power-law model fitting results are as follows.")
       
-    print("INFO Flow sweep 3: K = %f, n = %f, R^2 = %f" % (K3, n3, r2_score(viscosity3_trimmed, eta3)))
-    print("INFO Flow sweep 4: K = %f, n = %f, R^2 = %f" % (K4, n4, r2_score(viscosity4_trimmed, eta4)))
+    print("INFO Flow sweep 3: k = %f, n = %f, R^2 = %f" % (k3, n3, r2_score(viscosity3_trimmed, eta3)))
+    print("INFO Flow sweep 4: k = %f, n = %f, R^2 = %f" % (k4, n4, r2_score(viscosity4_trimmed, eta4)))
     # (5) Legend
     ax1.legend(['Flow sweep 3', 'Flow sweep 4', 'Power-law fitted (flow sweep 3)', 'Power-law fitted (flow sweep 4)'], loc = 'upper right', fontsize = 11, frameon = False)
 
   elif curvefit_equation == 'Cross':
-    # The Cross model fitting might be differed according to the given shear_rate range.
-    # Therefore, it is important to take shear_rate range from the user.
-    print("Enter the desired minimum shear rate range [unit: s^-1] (e.g. 10):")
-    min_range = float(input())
-    print("Enter the desired maximum shear rate range [unit: s^-1] (e.g. 500):")
-    max_range = float(input())
-
-    # Trim the data based on user's desired shear rate range
-    shear_rate3_trimmed = shear_rate3[(shear_rate3 >= min_range) & (shear_rate3 <= max_range)]
-    viscosity3_trimmed = viscosity3[(shear_rate3 >= min_range) & (shear_rate3 <= max_range)]
-    shear_rate4_trimmed = shear_rate4[(shear_rate4 >= min_range) & (shear_rate4 <= max_range)]
-    viscosity4_trimmed = viscosity4[(shear_rate4 >= min_range) & (shear_rate4 <= max_range)]
 
     # (1) flow sweep 3 fitting
-    # NOTE: The initial values of K, n, eta0, and eta_infty are set to 1.0, 1.0, 1.0, and 1.0, respectively.
+    # NOTE: The initial values of K, m, eta0, and eta_infty are set to 1.0, 1.0, 1.0, and 1.0, respectively.
     popt3, pcov3 = curve_fit(cross, shear_rate3_trimmed, viscosity3_trimmed, p0 = [1.0, 1.0, 1.0, 1.0], maxfev = 1000000)
     K3 = popt3[0]
-    n3 = popt3[1]
+    m3 = popt3[1]
     eta0_3 = popt3[2]
     eta_infty_3 = popt3[3]
-    eta3 = cross(shear_rate3_trimmed, K3, n3, eta0_3, eta_infty_3)
+    eta3 = cross(shear_rate3_trimmed, K3, m3, eta0_3, eta_infty_3)
     # (2) flow sweep 4 fitting
-    # NOTE: The initial values of K, n, eta0, and eta_infty are set to 1.0, 1.0, 1.0, and 1.0, respectively.
+    # NOTE: The initial values of K, m, eta0, and eta_infty are set to 1.0, 1.0, 1.0, and 1.0, respectively.
     popt4, pcov4 = curve_fit(cross, shear_rate4_trimmed, viscosity4_trimmed, p0 = [1.0, 1.0, 1.0, 1.0], maxfev = 1000000)
     K4 = popt4[0]
-    n4 = popt4[1]
+    m4 = popt4[1]
     eta0_4 = popt4[2]
     eta_infty_4 = popt4[3]
-    eta4 = cross(shear_rate4_trimmed, K4, n4, eta0_4, eta_infty_4)
+    eta4 = cross(shear_rate4_trimmed, K4, m4, eta0_4, eta_infty_4)
     # (3) Plot
     half_linewidth = line_width / 2
     ax1.plot(shear_rate3_trimmed, eta3, color = 'tab:red', linestyle = '--', linewidth = half_linewidth, alpha = 0.7)
@@ -635,39 +620,27 @@ def etagammaplot():
     # (4) Print
     print("INFO The Cross model is selected.")
     print("INFO The Cross model fitting results are as follows.")
-    print("INFO Flow sweep 3: K = %f, n = %f, eta0 = %f, eta_infty = %f, R^2 = %f" % (K3, n3, eta0_3, eta_infty_3, r2_score(viscosity3_trimmed, eta3)))
-    print("INFO Flow sweep 4: K = %f, n = %f, eta0 = %f, eta_infty = %f, R^2 = %f" % (K4, n4, eta0_4, eta_infty_4, r2_score(viscosity4_trimmed, eta4)))
+    print("INFO Flow sweep 3: K = %f, m = %f, eta0 = %f, eta_infty = %f, R^2 = %f" % (K3, m3, eta0_3, eta_infty_3, r2_score(viscosity3_trimmed, eta3)))
+    print("INFO Flow sweep 4: K = %f, m = %f, eta0 = %f, eta_infty = %f, R^2 = %f" % (K4, m4, eta0_4, eta_infty_4, r2_score(viscosity4_trimmed, eta4)))
     # (5) Legend
-    ax1.legend(['Flow sweep 3', 'Flow sweep 4', 'Cross fitted (flow sweep 3)', 'Cross fitted (flow sweep 4)'], loc = 'upper right', fontsize = 11, frameon = False)
+    ax1.legend(['Flow sweep 3', 'Flow sweep 4', 'Cross model fitted (flow sweep 3)', 'Cross model fitted (flow sweep 4)'], loc = 'upper right', fontsize = 11, frameon = False)
 
   elif curvefit_equation == 'Sisko':
-    # The Sisko model fitting might be differed according to the given shear rate range.
-    # Therefore, it is important to take shear_rate range from the user.
-    print("Enter the desired minimum shear rate range [unit: s^-1] (e.g. 10):")
-    min_range = float(input())
-    print("Enter the desired maximum shear rate range [unit: s^-1] (e.g. 500):")
-    max_range = float(input())
-
-    # Trim the data based on user's desired shear rate range
-    shear_rate3_trimmed = shear_rate3[(shear_rate3 >= min_range) & (shear_rate3 <= max_range)]
-    viscosity3_trimmed = viscosity3[(shear_rate3 >= min_range) & (shear_rate3 <= max_range)]
-    shear_rate4_trimmed = shear_rate4[(shear_rate4 >= min_range) & (shear_rate4 <= max_range)]
-    viscosity4_trimmed = viscosity4[(shear_rate4 >= min_range) & (shear_rate4 <= max_range)]
 
     # (1) flow sweep 3 fitting
-    # NOTE: The initial values of K, n, and eta_infty are set to 1.0, 1.0, and 1.0, respectively.
+    # NOTE: The initial values of k, n, and eta_infty are set to 1.0, 1.0, and 1.0, respectively.
     popt3, pcov3 = curve_fit(sisko, shear_rate3_trimmed, viscosity3_trimmed, p0 = [1.0, 1.0, 1.0], maxfev = 1000000)
-    K3 = popt3[0]
+    k3 = popt3[0]
     n3 = popt3[1]
     eta_infty_3 = popt3[2]
-    eta3 = sisko(shear_rate3_trimmed, K3, n3, eta_infty_3)
+    eta3 = sisko(shear_rate3_trimmed, k3, n3, eta_infty_3)
     # (2) flow sweep 4 fitting
-    # NOTE: The initial values of K, n, and eta_infty are set to 1.0, 1.0, and 1.0, respectively.
+    # NOTE: The initial values of k, n, and eta_infty are set to 1.0, 1.0, and 1.0, respectively.
     popt4, pcov4 = curve_fit(sisko, shear_rate4_trimmed, viscosity4_trimmed, p0 = [1.0, 1.0, 1.0], maxfev = 1000000)
-    K4 = popt4[0]
+    k4 = popt4[0]
     n4 = popt4[1]
     eta_infty_4 = popt4[2]
-    eta4 = sisko(shear_rate4_trimmed, K4, n4, eta_infty_4)
+    eta4 = sisko(shear_rate4_trimmed, k4, n4, eta_infty_4)
     # (3) Plot
     half_linewidth = line_width / 2
     ax1.plot(shear_rate3_trimmed, eta3, color = 'tab:red', linestyle = '--', linewidth = half_linewidth, alpha = 0.7)
@@ -678,8 +651,8 @@ def etagammaplot():
     # (4) Print
     print("INFO The Sisko model is selected.")
     print("INFO The Sisko model fitting results are as follows.")
-    print("INFO Flow sweep 3: K = %f, n = %f, eta_infty = %f, R^2 = %f" % (K3, n3, eta_infty_3, r2_score(viscosity3_trimmed, eta3)))
-    print("INFO Flow sweep 4: K = %f, n = %f, eta_infty = %f, R^2 = %f" % (K4, n4, eta_infty_4, r2_score(viscosity4_trimmed, eta4)))
+    print("INFO Flow sweep 3: k = %f, n = %f, eta_infty = %f, R^2 = %f" % (k3, n3, eta_infty_3, r2_score(viscosity3_trimmed, eta3)))
+    print("INFO Flow sweep 4: k = %f, n = %f, eta_infty = %f, R^2 = %f" % (k4, n4, eta_infty_4, r2_score(viscosity4_trimmed, eta4)))
     # (5) Legend
     ax1.legend(['Flow sweep 3', 'Flow sweep 4', 'Sisko model fitted (flow sweep 3)', 'Sisko model fitted (flow sweep 4)'], loc = 'upper right', fontsize = 11, frameon = False)
 
