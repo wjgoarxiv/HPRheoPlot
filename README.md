@@ -13,6 +13,136 @@ or
 ```
 pip3 install HPRheoPlot
 ```
+
+## **Usage**
+After installing the program, you can run the program by typing the following command in the terminal:
+```
+hprheoplot
+```
+When you firstly run the program, you don't have the `settings.txt` file. The program will create the `settings.txt` file and ask you to input several options. 
+```
+ERROR There is no `settings.txt` file in the current directory. I will make a new `settings.txt` file for you.
+INFO The `settings.txt` file has been created. Please edit the file and run the program again.
+```
+The `settings.txt` looks like below:
+```
+###################################
+############ SETTINGS.TXT #############
+###################################
+
+# This file is for the settings of the HPRheoPlot program. 
+# NOTE: This file should be named as `settings.txt`. If isn't, the program cannot load the settings. 
+
+###########################################################
+# DW-directory: The directory location where the csv files from DWStemp program are located. 
+DW-directory = ./DW/ 
+
+# TRIOS-directory: The directory location where the csv files from TRIOS program are located. 
+TRIOS-directory = ./TRIOS/ 
+
+# graph-type: The type of graph that you want to plot (options: eta-t, eta-gamma, eta-delp, gamma-sigma) 
+graph-type = eta-gamma
+
+# graph-style: The style of graph that you want to plot (options: line, scatter) 
+graph-style = scatter 
+
+# line-width: The line width of the graph (example: 0.5, 1, 2.3, etc.) - this works when graph-style is line. 
+line-width = 2 
+
+# graph-decorate: Whether you want to decorate the graph (options: y, n) 
+graph-decorate = y 
+
+# curve-fit-equation: The equation that you want to use for the curve fit (options: Powerlaw, Cross, Sisko) 
+curve-fit-equation = Sisko 
+```
+Note that program requires the directory locations where the raw data files are located. Make sure you have DWStemp raw files (CSV format) and TRIOS raw files (XLS format) in the directory locations that you input in the `settings.txt` file. Depending on the `graph-type` you selected, the program will export different types of graphs. 
+### **CASE I: Viscosity-time plot (`eta-t`)**
+If you want to draw the viscosity-time plot, you need to provide both the pressure info from the DW raw file (CSV format) and the viscosity info from the TRIOS raw file (XLS format). You can select the desired raw files via executing the program. 
+```
+INFO These are the DWStemp raw files that are in the folder. Please type the file number that you want to use:
+```
+Type the file number of the DWStemp raw file that you want to use. 
+```
+INFO These are the TRIOS raw excel files that are in the folder. Please type the file number that you want to use:
+```
+Type the file number of the TRIOS raw file that you want to use. You must choose the same file which was recorded at the same time as the DWStemp raw file. 
+```
+INFO The eta-t graph is saved as 'eta-t.png'.
+```
+The program will draw the viscosity-time plot and save it as `eta-t.png` in the current directory.
+
+### **CASE II: Viscosity-shear rate plot (`eta-gamma`)**
+If you want to draw the viscosity-shear rate plot, you only need to bring your TRIOS raw file (XLS format). You can select the desired raw file via executing the program. 
+```
+INFO These are the TRIOS raw excel files that are in the folder. Please type the file number that you want to use:
+```
+Type the file number of the TRIOS raw file that you want to use. The program will ask you to input the desired minimum shear rate value and the maximum shear rate value when you fit the data.
+```
+INFO Enter the desired minimum shear rate value [unit: s^-1] (e.g. 10):
+```
+```
+INFO Enter the desired maximum shear rate value [unit: s^-1] (e.g. 500):
+```
+The program will export the curve fitting information based on your selected equation.
+```
+INFO The Cross model is selected.
+INFO The Cross model fitting results are as follows.
+```
+```
+INFO Flow sweep 3: K = ... , n = ... , eta0 = ... , eta_infty = ..., R^2 = ...
+INFO Flow sweep 4: K = ... , n = ... , eta0 = ... , eta_infty = ..., R^2 = ...
+```
+Also, the program will draw the viscosity-shear rate plot and save it as `eta-gamma.png` in the current directory.
+```
+INFO The eta-gamma graph is saved as 'eta-gamma.png'.
+```
+### **CASE III: Viscosity-pressure plot (`eta-delp`)**
+If you want to draw the viscosity-pressure plot, you need to prepare both the pressure info from the DW raw file (CSV format) and the viscosity info from the TRIOS raw file (XLS format). You can select the desired raw files via executing the program. 
+```
+INFO These are the DWStemp raw files that are in the folder. Please type the file number that you want to use:
+```
+```
+INFO These are the TRIOS raw excel files that are in the folder. Please type the file number that you want to use:
+```
+If you successfully select the raw files, the program will draw the viscosity-pressure plot and save it as `eta-delp.png` in the current directory.
+```
+INFO The eta-delp graph is saved as 'eta-delp.png'.
+```
+### **CASE IV: Shear stress-shear rate plot (`gamma-sigma`)**
+If you want to draw the shear stress-shear rate plot, you only need to bring your TRIOS raw file (XLS format). You can select the desired raw file via executing the program. 
+```
+INFO These are the TRIOS raw excel files that are in the folder. Please type the file number that you want to use:
+```
+Select the desired raw file number. The program will draw the shear stress-shear rate plot and save it as `gamma-sigma.png` in the current directory.
+```
+INFO The gamma-sigma graph is saved as 'gamma-sigma.png'.
+```
+
+### **EXTRA: Raw file format**
+HPRheoPlot designed to treat the below raw files. If you have different raw files, you can modify the program to treat your raw files, or you can modify your format to the below format. 
+#### **(1) DWStemp raw file (CSV format)**
+```
+RecNo.,Time,Pressure1,Pressure2,Temp.1,Temp.2,Temp. 3,Temp. 4
+No.   ,sec,kgf/§²,kgf/§²,¡É,¡É,¡É,¡É
+         1,        60,     36.93,      0.00,      0.00,      0.00,      0.00,      0.00
+         2,       120,     36.83,      0.00,      0.00,      0.00,      0.00,      0.00
+         3,       180,     36.69,      0.00,      0.00,      0.00,      0.00,      0.00
+         4,       240,     36.54,      0.00,      0.00,      0.00,      0.00,      0.00
+         5,       300,     36.36,      0.00,      0.00,      0.00,      0.00,      0.00
+...
+```
+#### **(2) TRIOS raw file (XLS format)**
+```
+Flow ramp - 6					
+Stress	Shear rate	Viscosity	Step time	Temperature	Normal stress
+Pa	1/s	Pa.s	s	°C	Pa
+30.1505	0.00356128	8466.19	6.03004	1	-0.132814
+90.7678	0.00349795	25948.9	18.1535	1	-0.13352
+150.733	0.00362841	41542.5	30.1466	1.01	-0.133736
+...
+```
+
+
 ## **Features**
 HPRheoPlot can draw 4 types of graphs. In the `settings.txt` file (HPRheometer initially creates this file if you don't have it), you can type the desired plot type that you want (`graph-type` option). The program will draw the graph that you want. The available graph types are:
 
