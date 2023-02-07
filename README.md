@@ -151,7 +151,7 @@ Pa	1/s	Pa.s	s	°C	Pa
 HPRheoPlot can draw 4 types of graphs. In the `settings.txt` file (HPRheoPlot initially creates this file if you don't have it), you can type the desired plot type that you want (`graph-type` option). The program will draw the graph that you want. The available graph types are:
 
 - **Viscosity-Time Plot (`eta-t`).** To draw this plot, you need to provide the pressure info from the DW raw file (CSV format) and the viscosity info from the TRIOS raw file (XLS format). You can select the desired raw files via executing the program. 
-- **Viscosity-Shear Rate Plot (`eta-gamma`).**: The program will search for the raw TRIOS file (XLS format) and allow you to select the curve fit models among Powerlaw, Cross, and Sisko model. You can also enter the desired shear rate range when the curve fit is in progress. The program will ask you to input the shear rate range. Each curve fit models are followed by the below equations: <br>
+- **Viscosity-Shear Rate Plot (`eta-gamma`).** The program will search for the raw TRIOS file (XLS format) and allow you to select the curve fit models among Powerlaw, Cross, and Sisko model. You can also enter the desired shear rate range when the curve fit is in progress. The program will ask you to input the shear rate range. Each curve fit models are followed by the below equations: <br>
   > (Powerlaw model) $\eta = k \dot\gamma^{n}$ <br>
   > (Cross model) $\eta = \frac{\eta_0 - \eta_{\infty}}{1 + (K\dot\gamma)^{m}} + \eta_{\infty}$ <br>
   > (Sisko model) $\eta = \eta_{\infty} + k \dot\gamma^{n-1}$ <br>
