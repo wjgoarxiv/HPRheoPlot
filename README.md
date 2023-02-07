@@ -31,8 +31,11 @@ HPRheoPlot can draw 4 types of graphs. In the `settings.txt` file (HPRheometer i
 * This program is NOT affiliated with TA instruments.
 * You SHOULD export raw data from TRIOS software with following methods to successfully run HPRheoPlot.
   > (1) If you have finished projects in the TRIOS software, open files from the `file manager` tab. <br>
+  > <img src="https://github.com/wjgoarxiv/HPRheoPlot/blob/9c3bc4d16157a246181e3d36ed3f318c798a1517/(1)%20Opens%20files.png" style="width:70%;height:70%"/> <br>
   > (2) Right click that file and select `Export` - `To Excel`. <br>
+  > <img src="https://github.com/wjgoarxiv/HPRheoPlot/blob/9c3bc4d16157a246181e3d36ed3f318c798a1517/(2)%20Right%20click%20-%20Export%20-%20To%20Excel.png" style="width:65%;height:65%"/> <br>
   > (3) In the `Details` tab, you should choose `Headings only`. Never includes `Include parameters` or `Include hidden points in output`. Includes all steps in the `Steps` tab. <br>
+  > <img src="https://github.com/wjgoarxiv/HPRheoPlot/blob/9c3bc4d16157a246181e3d36ed3f318c798a1517/(3)%20File%20export.png" style="width:60%;height:60%"/> <br>
   > (4) If you used different steps of sequences, you should modify the original source code. HPRheoPlot only works for my custom sequence. It is same as below: <br>
   >> (a) Temperature ramp - 1 (down to the target temperature) <br>
   >> (b) Peak hold - 2 (hold the target temperature) <br>
