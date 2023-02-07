@@ -1,6 +1,8 @@
 # **HPRheoPlot**
 ::Automatic Graph Plotter for TA Instruments Rheometer Users::
 
+<a href="https://www.buymeacoffee.com/woojingo" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-red.png" alt="Buy Me A Coffee" style="height: 40px !important;width: 120px !important;" ></a>
+
 ## **Introduction**
 **HPRheoPlot** is designed for users who use *TA instruments rheometer* and *TRIOS* software. This program provides a convenient way to plot various types of rheological graphs with the data from your experiments. Since the TRIOS software does not provide a way to plot the graphs, this program will help you to plot the graphs automatically. 
 
