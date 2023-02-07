@@ -70,6 +70,7 @@ Type the file number of the TRIOS raw file that you want to use. You must choose
 INFO The eta-t graph is saved as 'eta-t.png'.
 ```
 The program will draw the viscosity-time plot and save it as `eta-t.png` in the current directory.
+<img src = "https://github.com/wjgoarxiv/HPRheoPlot/blob/355ee7f6b5e41e372909d95d201e36cac5c47d21/eta-t.png" style="width:50%;height:50%"/>
 
 ### **CASE II: Viscosity-shear rate plot (`eta-gamma`)**
 If you want to draw the viscosity-shear rate plot, you only need to bring your TRIOS raw file (XLS format). You can select the desired raw file via executing the program. 
@@ -96,6 +97,8 @@ Also, the program will draw the viscosity-shear rate plot and save it as `eta-ga
 ```
 INFO The eta-gamma graph is saved as 'eta-gamma.png'.
 ```
+<img src = "https://github.com/wjgoarxiv/HPRheoPlot/blob/355ee7f6b5e41e372909d95d201e36cac5c47d21/eta-gamma.png" style="width:50%;height:50%"/>
+
 ### **CASE III: Viscosity-pressure plot (`eta-delp`)**
 If you want to draw the viscosity-pressure plot, you need to prepare both the pressure info from the DW raw file (CSV format) and the viscosity info from the TRIOS raw file (XLS format). You can select the desired raw files via executing the program. 
 ```
@@ -108,6 +111,8 @@ If you successfully select the raw files, the program will draw the viscosity-pr
 ```
 INFO The eta-delp graph is saved as 'eta-delp.png'.
 ```
+<img src = "https://github.com/wjgoarxiv/HPRheoPlot/blob/355ee7f6b5e41e372909d95d201e36cac5c47d21/eta-delp.png" style = "width:50%;height:50%"/>
+
 ### **CASE IV: Shear stress-shear rate plot (`gamma-sigma`)**
 If you want to draw the shear stress-shear rate plot, you only need to bring your TRIOS raw file (XLS format). You can select the desired raw file via executing the program. 
 ```
@@ -117,6 +122,7 @@ Select the desired raw file number. The program will draw the shear stress-shear
 ```
 INFO The gamma-sigma graph is saved as 'gamma-sigma.png'.
 ```
+<img src="https://github.com/wjgoarxiv/HPRheoPlot/blob/355ee7f6b5e41e372909d95d201e36cac5c47d21/gamma-sigma.png" style="width:50%;height:50%"/>
 
 ### **EXTRA: Raw file format**
 HPRheoPlot designed to treat the below raw files. If you have different raw files, you can modify the program to treat your raw files, or you can modify your format to the below format. 
