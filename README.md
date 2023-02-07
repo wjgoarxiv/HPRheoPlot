@@ -88,16 +88,14 @@ The program will export the curve fitting information based on your selected equ
 ```
 INFO The Cross model is selected.
 INFO The Cross model fitting results are as follows.
-```
-```
-INFO Flow sweep 3: K = ... , n = ... , eta0 = ... , eta_infty = ..., R^2 = ...
-INFO Flow sweep 4: K = ... , n = ... , eta0 = ... , eta_infty = ..., R^2 = ...
+INFO Flow sweep 3: K = 0.006285, m = 3.209257, eta0 = 0.404625, eta_infty = 0.072276, R^2 = 0.989797
+INFO Flow sweep 4: K = 0.028976, m = 1.446927, eta0 = 1.714347, eta_infty = 0.034514, R^2 = 0.999955
 ```
 Also, the program will draw the viscosity-shear rate plot and save it as `eta-gamma.png` in the current directory.
 ```
 INFO The eta-gamma graph is saved as 'eta-gamma.png'.
 ```
-<img src = "https://github.com/wjgoarxiv/HPRheoPlot/blob/355ee7f6b5e41e372909d95d201e36cac5c47d21/eta-gamma.png" style="width:50%;height:50%"/>
+<img src = "https://github.com/wjgoarxiv/HPRheoPlot/blob/14d6ca4170ec4f90ea0e6d9efd8e213cc1d023ee/eta-gamma-example.png" style="width:50%;height:50%"/>
 
 ### **CASE III: Viscosity-pressure plot (`eta-delp`)**
 If you want to draw the viscosity-pressure plot, you need to prepare both the pressure info from the DW raw file (CSV format) and the viscosity info from the TRIOS raw file (XLS format). You can select the desired raw files via executing the program. 
