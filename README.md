@@ -1,5 +1,6 @@
 # **HPRheoPlot**
-::Automatic Graph Plotter for TA Instruments Rheometer Users::
+<img src = "HPRheoPlot_logo.png" style="height:60%; width: 60%;"> 
+::Automatic Graph Plotter for TA Instruments Rheometer Users:: <br/><br/>
 
 <a href="https://www.buymeacoffee.com/woojingo" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-red.png" alt="Buy Me A Coffee" style="height: 40px !important;width: 120px !important;" ></a>
 
